@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200vh; /* Extend height for scrolling */
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #ffffff;
+        }
+
+        .main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .main h1 {
+            font-size: 14rem;
+            font-weight: bold;
+            color: #000;
+            transform-origin: center;
+        }
+
+        .color-picker-container {
+            text-align: center;
+            background-color: #000; /* Set to black */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Glassy effect */
+            color: silver; /* Font color set to silver */
+            opacity: 0; /* Start invisible */
+            position: fixed;
+            bottom: 220px;
+            z-index: 3;
+            transition: opacity 0.5s ease;
+        }
+
+        .color-display {
+            width: 250px; /* Increased size */
+            height: 250px;
+            border-radius: 10px;
+            margin: 20px auto;
+            border: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver glassy border */
+        }
+
+        .color-picker-container h3 {
+            font-size: 18px;
+            color: silver;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        input[type="color"] {
+            width: 120px;
+            height: 50px;
+            padding: 5px;
+            font-size: 16px;
+            background-color: black; /* Set background color to black */
+            color: silver; /* Text color set to silver */
+            border-radius: 5px;
+            border: none; /* Remove default border */
+            outline: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver outline */
+        }
+
+        input[type="text"] {
+            width: 100px;
+            height: 40px;
+            padding: 5px;
+            font-size: 16px;
+            background-color: black; /* Set background color to black */
+            color: silver; /* Text color set to silver */
+            border-radius: 5px;
+            border: none; /* Remove default border */
+            outline: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver outline */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #000; /* Button color set to black */
+            color: silver;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver glassy border */
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Layer with "COLOUR" text -->
+    <div class="main">
+        <h1>COLOUR</h1>
+    </div>
+
+    <h2>Color Picker</h2>
+    <div class="color-picker-container" id="colorPickerContainer">
+        <h3>GET YOUR COLOUR PALATTE</h3>
+        <div class="color-display" id="colorDisplay"></div>
+        <h3>SELECT COLOUR OR WRITE HEX CODE</h3>
+        
+        <!-- Inputs in a single row -->
+        <div class="input-group">
+            <input type="color" id="colorInput" />
+            <input type="text" id="hexInput" placeholder="#FFFFFF" maxlength="7" />
+        </div>
+        
+        <button id="setColorButton">SUBMIT</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
+    <script>
+        const colorInput = document.getElementById('colorInput');
+        const hexInput = document.getElementById('hexInput');
+        const colorDisplay = document.getElementById('colorDisplay');
+        const setColorButton = document.getElementById('setColorButton');
+        const colorPickerContainer = document.getElementById('colorPickerContainer');
+
+        // Initialize hexInput with a fixed "#" prefix
+        hexInput.value = "#";
+
+        // Limit hex input to six characters after "#"
+        hexInput.addEventListener('input', () => {
+            if (!hexInput.value.startsWith('#')) {
+                hexInput.value = '#' + hexInput.value;
+            }
+            hexInput.value = hexInput.value.slice(0, 7); // Ensure max 7 characters with "#"
+        });
+
+        // Update color display when color input changes
+        colorInput.addEventListener('input', (event) => {
+            const selectedColor = event.target.value;
+            colorDisplay.style.backgroundColor = selectedColor;
+            hexInput.value = selectedColor; // Update hex input field
+        });
+
+        // Set color display from hex input
+        setColorButton.addEventListener('click', () => {
+            const hexColor = hexInput.value;
+            if (/^#([0-9A-F]{6})$/i.test(hexColor)) {
+                colorDisplay.style.backgroundColor = hexColor;
+                colorInput.value = hexColor; // Update color input field
+            } else {
+                alert('Please enter a valid hex color code.');
+            }
+        });
+
+        // Register ScrollTrigger with GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate the "COLOUR" text scaling effect for entire word
+        gsap.to(".main h1", {
+            scale: 350,
+            scrollTrigger: {
+                trigger: ".main",
+                start: "top top",
+                end: "bottom 5%",
+                scrub: 1
+            }
+        });
+
+        // Animate color picker container appearance after scrolling
+        gsap.to(colorPickerContainer, {
+            opacity: 1,
+            scrollTrigger: {
+                trigger: ".main",
+                start: "bottom 5%",
+                end: "bottom -20%",
+                scrub: 1,
+                onEnter: () => {
+                    colorPickerContainer.style.opacity = 1;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
