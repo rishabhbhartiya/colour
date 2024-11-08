@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Color Picker</title>
+    <title>Color Picker</title>
     <style>
         body {
             display: flex;
@@ -14,14 +14,12 @@
             background-color: #f4f4f4;
             font-family: Arial, sans-serif;
             overflow-x: hidden;
-            margin: 0;
         }
 
         h2 {
             margin-bottom: 20px;
-            font-size: 2em;
+            font-size: 24px;
             color: #ffffff;
-            text-align: center;
         }
 
         .main {
@@ -37,73 +35,79 @@
         }
 
         .main h1 {
-            font-size: calc(8vw + 2em); /* Responsive font size */
+            font-size: 14rem;
             font-weight: bold;
             color: #000;
             transform-origin: center;
-            text-align: center;
         }
 
         .color-picker-container {
             text-align: center;
-            background-color: #000;
+            background-color: #000; /* Set to black */
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-            color: silver;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Glassy effect */
+            color: silver; /* Font color set to silver */
             opacity: 0; /* Start invisible */
             position: fixed;
-            bottom: 20%;
-            width: 90%;
-            max-width: 400px; /* Limit max-width for larger screens */
+            bottom: 220px;
             z-index: 3;
             transition: opacity 0.5s ease;
         }
 
         .color-display {
-            width: 80%;
-            max-width: 250px; /* Limit max width for larger screens */
+            width: 250px; /* Increased size */
             height: 250px;
             border-radius: 10px;
             margin: 20px auto;
-            border: 1px solid rgba(192, 192, 192, 0.5);
+            border: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver glassy border */
         }
 
         .color-picker-container h3 {
-            font-size: 1.2em;
+            font-size: 18px;
             color: silver;
             margin-bottom: 10px;
         }
 
         .input-group {
             display: flex;
-            flex-wrap: wrap; /* Allow wrapping for smaller screens */
             gap: 10px;
             justify-content: center;
             align-items: center;
             margin-top: 15px;
         }
 
-        input[type="color"],
-        input[type="text"] {
-            width: 100%;
-            max-width: 120px; /* Limit max width */
+        input[type="color"] {
+            width: 120px;
             height: 50px;
+            padding: 5px;
             font-size: 16px;
-            background-color: black;
-            color: silver;
+            background-color: black; /* Set background color to black */
+            color: silver; /* Text color set to silver */
             border-radius: 5px;
-            border: none;
-            outline: 1px solid rgba(192, 192, 192, 0.5);
+            border: none; /* Remove default border */
+            outline: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver outline */
+        }
+
+        input[type="text"] {
+            width: 100px;
+            height: 40px;
+            padding: 5px;
+            font-size: 16px;
+            background-color: black; /* Set background color to black */
+            color: silver; /* Text color set to silver */
+            border-radius: 5px;
+            border: none; /* Remove default border */
+            outline: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver outline */
         }
 
         button {
             padding: 10px 20px;
-            background-color: #000;
+            background-color: #000; /* Button color set to black */
             color: silver;
-            font-size: 1em;
+            font-size: 18px;
             border-radius: 5px;
-            border: 1px solid rgba(192, 192, 192, 0.5);
+            border: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver glassy border */
             cursor: pointer;
             margin-top: 15px;
         }
@@ -115,16 +119,7 @@
         /* Adjustments for small screens */
         @media (max-width: 600px) {
             .main h1 {
-                font-size: 4rem;
-            }
-
-            .color-display {
-                height: 200px;
-            }
-
-            button {
-                width: 100%;
-                max-width: 200px;
+                font-size: 6rem;
             }
         }
     </style>
@@ -168,14 +163,14 @@
             if (!hexInput.value.startsWith('#')) {
                 hexInput.value = '#' + hexInput.value;
             }
-            hexInput.value = hexInput.value.slice(0, 7);
+            hexInput.value = hexInput.value.slice(0, 7); // Ensure max 7 characters with "#"
         });
 
         // Update color display when color input changes
         colorInput.addEventListener('input', (event) => {
             const selectedColor = event.target.value;
             colorDisplay.style.backgroundColor = selectedColor;
-            hexInput.value = selectedColor;
+            hexInput.value = selectedColor; // Update hex input field
         });
 
         // Set color display from hex input
@@ -183,7 +178,7 @@
             const hexColor = hexInput.value;
             if (/^#([0-9A-F]{6})$/i.test(hexColor)) {
                 colorDisplay.style.backgroundColor = hexColor;
-                colorInput.value = hexColor;
+                colorInput.value = hexColor; // Update color input field
             } else {
                 alert('Please enter a valid hex color code.');
             }
@@ -192,9 +187,13 @@
         // Register ScrollTrigger with GSAP
         gsap.registerPlugin(ScrollTrigger);
 
-        // Animate the "COLOUR" text scaling effect for entire word
+        // Adjust scroll animation scale for responsive screens
+        const isMobile = window.innerWidth <= 600;
+        const scaleValue = isMobile ? 30 : 350; // Use a lower scale for mobile screens
+
+        // Animate the "COLOUR" text scaling effect
         gsap.to(".main h1", {
-            scale: 550,
+            scale: scaleValue,
             scrollTrigger: {
                 trigger: ".main",
                 start: "top top",
@@ -219,4 +218,3 @@
     </script>
 </body>
 </html>
-
