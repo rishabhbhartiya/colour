@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Picker</title>
+    <title>Responsive Color Picker</title>
     <style>
         body {
             display: flex;
@@ -14,12 +14,14 @@
             background-color: #f4f4f4;
             font-family: Arial, sans-serif;
             overflow-x: hidden;
+            margin: 0;
         }
 
         h2 {
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 2em;
             color: #ffffff;
+            text-align: center;
         }
 
         .main {
@@ -35,85 +37,95 @@
         }
 
         .main h1 {
-            font-size: 14rem;
+            font-size: calc(8vw + 2em); /* Responsive font size */
             font-weight: bold;
             color: #000;
             transform-origin: center;
+            text-align: center;
         }
 
         .color-picker-container {
             text-align: center;
-            background-color: #000; /* Set to black */
+            background-color: #000;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Glassy effect */
-            color: silver; /* Font color set to silver */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            color: silver;
             opacity: 0; /* Start invisible */
             position: fixed;
-            bottom: 220px;
+            bottom: 20%;
+            width: 90%;
+            max-width: 400px; /* Limit max-width for larger screens */
             z-index: 3;
             transition: opacity 0.5s ease;
         }
 
         .color-display {
-            width: 250px; /* Increased size */
+            width: 80%;
+            max-width: 250px; /* Limit max width for larger screens */
             height: 250px;
             border-radius: 10px;
             margin: 20px auto;
-            border: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver glassy border */
+            border: 1px solid rgba(192, 192, 192, 0.5);
         }
 
         .color-picker-container h3 {
-            font-size: 18px;
+            font-size: 1.2em;
             color: silver;
             margin-bottom: 10px;
         }
 
         .input-group {
             display: flex;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
             gap: 10px;
             justify-content: center;
             align-items: center;
             margin-top: 15px;
         }
 
-        input[type="color"] {
-            width: 120px;
-            height: 50px;
-            padding: 5px;
-            font-size: 16px;
-            background-color: black; /* Set background color to black */
-            color: silver; /* Text color set to silver */
-            border-radius: 5px;
-            border: none; /* Remove default border */
-            outline: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver outline */
-        }
-
+        input[type="color"],
         input[type="text"] {
-            width: 100px;
-            height: 40px;
-            padding: 5px;
+            width: 100%;
+            max-width: 120px; /* Limit max width */
+            height: 50px;
             font-size: 16px;
-            background-color: black; /* Set background color to black */
-            color: silver; /* Text color set to silver */
+            background-color: black;
+            color: silver;
             border-radius: 5px;
-            border: none; /* Remove default border */
-            outline: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver outline */
+            border: none;
+            outline: 1px solid rgba(192, 192, 192, 0.5);
         }
 
         button {
             padding: 10px 20px;
-            background-color: #000; /* Button color set to black */
+            background-color: #000;
             color: silver;
-            font-size: 18px;
+            font-size: 1em;
             border-radius: 5px;
-            border: 1px solid rgba(192, 192, 192, 0.5); /* Slim silver glassy border */
+            border: 1px solid rgba(192, 192, 192, 0.5);
             cursor: pointer;
             margin-top: 15px;
         }
 
         button:hover {
             background-color: #333;
+        }
+
+        /* Adjustments for small screens */
+        @media (max-width: 600px) {
+            .main h1 {
+                font-size: 4rem;
+            }
+
+            .color-display {
+                height: 200px;
+            }
+
+            button {
+                width: 100%;
+                max-width: 200px;
+            }
         }
     </style>
 </head>
@@ -156,14 +168,14 @@
             if (!hexInput.value.startsWith('#')) {
                 hexInput.value = '#' + hexInput.value;
             }
-            hexInput.value = hexInput.value.slice(0, 7); // Ensure max 7 characters with "#"
+            hexInput.value = hexInput.value.slice(0, 7);
         });
 
         // Update color display when color input changes
         colorInput.addEventListener('input', (event) => {
             const selectedColor = event.target.value;
             colorDisplay.style.backgroundColor = selectedColor;
-            hexInput.value = selectedColor; // Update hex input field
+            hexInput.value = selectedColor;
         });
 
         // Set color display from hex input
@@ -171,7 +183,7 @@
             const hexColor = hexInput.value;
             if (/^#([0-9A-F]{6})$/i.test(hexColor)) {
                 colorDisplay.style.backgroundColor = hexColor;
-                colorInput.value = hexColor; // Update color input field
+                colorInput.value = hexColor;
             } else {
                 alert('Please enter a valid hex color code.');
             }
@@ -182,7 +194,7 @@
 
         // Animate the "COLOUR" text scaling effect for entire word
         gsap.to(".main h1", {
-            scale: 350,
+            scale: 550,
             scrollTrigger: {
                 trigger: ".main",
                 start: "top top",
@@ -207,3 +219,4 @@
     </script>
 </body>
 </html>
+
